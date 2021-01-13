@@ -1,0 +1,57 @@
+---
+namespace: common
+helm:
+  chart: https://github.com/Kong/charts/releases/download/kong-1.12.0/kong-1.12.0.tgz
+  #chart: https://stash.verizon.com/projects/NPDAP/repos/kong-apigateway/raw/charts/kong-1.12.0.tgz 
+  values:
+    plugins:
+      # oidc: true
+      jwt-keycloak: true
+    resources:
+      limits:
+        cpu: "1"
+        memory: 1Gi
+      requests:
+        cpu: "1"
+        memory: 1Gi
+    admin:
+      enabled: true
+      type: ClusterIP
+      http:
+        enabled: true
+        servicePort: 8001
+        containerPort: 8001
+    env:
+      # plugins: "bundled,oidc,jwt-keycloak"
+      plugins: "bundled,jwt-keycloak"
+      prefix: /kong_prefix/
+      database: "off"
+    postgresql:
+      enabled: false
+    ingressController:
+      enabled: false
+      installCRDs: false
+    dblessConfig:
+      configMap: kong-config
+    proxy:
+      enabled: true
+      type: ClusterIP
+
+targetCustomizations:
+- name: sandbox-east
+  clusterSelector:
+    matchLabels:
+      env: sandbox
+      name: sandbox-east
+  kustomize:
+    dir: overlays/sandbox-east
+  helm:
+    values:
+      image:
+        repository: nginx
+        tag: "latest"
+      autoscaling:
+        enabled: true
+        minReplicas: 2
+        maxReplicas: 5
+
