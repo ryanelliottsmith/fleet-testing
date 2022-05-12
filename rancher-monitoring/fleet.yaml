@@ -1,0 +1,54 @@
+defaultNamespace: cattle-monitoring-system
+dependsOn:
+  - name: rancher-monitoring-crd
+
+helm:
+  repo: https://github.com/rancher/charts/tree/dev-v2.6/charts/rancher-monitoring/
+  chart: rancher-monitoring
+  version: 100.1.2+up19.0.3
+  releaseName: rancher-monitoring
+  values:
+    defaultRules:
+      create: false
+    kubeStateMetrics:
+      enabled: false
+    prometheusOperator:
+      enabled: true
+    nodeExporter:
+      enabled: false
+    prometheus-adapter:
+      enabled: false
+    alertmanager:
+      enabled: false
+    grafana:
+      enabled: false
+    rkeControllerManager:
+      enabled: true
+    kubeControllerManager:
+      enabled: true
+    kubeEtcd:
+      enabled: true
+      service:
+        selector:
+          component: kube-etcd
+    rkeEtcd:
+      enabled: true
+    kubeScheduler:
+      enabled: true
+    rkeScheduler:
+      enabled: true
+    coreDns:
+      enabled: false
+    namespaceOverride: kube-system
+diff:
+  comparePatches:
+    - apiVersion: admissionregistration.k8s.io/v1
+      kind: MutatingWebhookConfiguration
+      name: rancher-monitoring-admission
+      operations:
+        - {"op": "remove", "path":"/webhooks/0/failurePolicy"}
+    - apiVersion: admissionregistration.k8s.io/v1
+      kind: ValidatingWebhookConfiguration
+      name: rancher-monitoring-admission
+      operations:
+        - {"op": "remove", "path":"/webhooks/0/failurePolicy"}
