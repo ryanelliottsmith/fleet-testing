@@ -3,7 +3,7 @@ dependsOn:
   - name: monitoring-crd-monitoring-rancher-monitoring-crd
 
 helm:
-  repo: https://github.com/rancher/charts/tree/dev-v2.6/charts/rancher-monitoring/
+  repo: https://charts.rancher.io
   chart: rancher-monitoring
   version: 100.1.2+up19.0.3
   releaseName: rancher-monitoring
