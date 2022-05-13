@@ -1,6 +1,6 @@
 defaultNamespace: cattle-monitoring-system
 dependsOn:
-  - name: rancher-monitoring-crd
+  - name: monitoring-crd-monitoring-rancher-monitoring-crd
 
 helm:
   repo: https://github.com/rancher/charts/tree/dev-v2.6/charts/rancher-monitoring/
