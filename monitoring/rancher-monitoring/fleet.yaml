@@ -19,8 +19,6 @@ helm:
       enabled: false
     alertmanager:
       enabled: false
-    grafana:
-      enabled: false
     rkeControllerManager:
       enabled: true
     kubeControllerManager:
